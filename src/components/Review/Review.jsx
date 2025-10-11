@@ -1,0 +1,42 @@
+import Header from "./Header";
+import Body from "./Body";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import axios from "axios";
+import BASE_URL from "../../../config";
+const Review = () => {
+  const [data, setData] = useState({});
+  const [commentMode, setCommentMode] = useState(false);
+
+  const { id } = useParams();
+  useEffect(() => {
+    const getApplication = async () => {
+      const response = await axios.get(`${BASE_URL}/user/${id}`);
+      const data = response.data.data;
+      setData(data);
+    };
+    getApplication();
+  }, [id]);
+
+  const toggleCommentMode = () => {
+    setCommentMode((prev) => !prev);
+    const iframe = document.getElementById("review-iframe");
+    iframe?.contentWindow?.postMessage(
+      { type: "toggleCommentMode", mode: !commentMode },
+      "*"
+    );
+  };
+
+  return (
+    <div className="w-full h-full flex flex-col bg-[#EBEFF4]">
+      <Header
+        data={data}
+        commentMode={commentMode}
+        toggleCommentMode={toggleCommentMode}
+      />
+      <Body id={id} data={data} />
+    </div>
+  );
+};
+
+export default Review;
