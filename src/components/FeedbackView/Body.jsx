@@ -1,18 +1,13 @@
+import Iframe from "./Iframe";
 import Sidebar from "./Sidebar";
 import { Separator } from "@/components/ui/separator";
-import Received from "./Received";
-import Given from "./Given";
-const Body = ({ page, portfolio }) => {
+const Body = ({ id, portfolio }) => {
   return (
     <div className="w-full flex-1 flex px-5 py-2">
       <div className="w-full flex-1 flex rounded-2xl bg-white">
-        {page === "received" ? (
-          <Received portfolio={portfolio} />
-        ) : (
-          <Given portfolio={portfolio} />
-        )}
+        <Iframe id={id} portfolio={portfolio} />
         <Separator orientation="vertical" />
-        <Sidebar page={page} portfolio={portfolio} />
+        <Sidebar id={id} />
       </div>
     </div>
   );

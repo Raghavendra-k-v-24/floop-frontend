@@ -28,15 +28,6 @@ const CustomInput = ({
         required={required}
         onChange={handleChange}
       />
-      {/* {placeholder == "Link" && (
-        <Label
-          htmlFor="picture"
-          className="text-[10px] text-[#3a3cff] absolute top-16 "
-          required
-        >
-          Preview link
-        </Label>
-      )} */}
     </div>
   );
 };

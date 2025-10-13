@@ -1,12 +1,12 @@
 import { BASE_URL_SERVER } from "../../../config";
-const Iframe = ({ portfolioLink }) => {
+const Iframe = ({ id, data }) => {
   return (
-    <div className="w-full h-full overflow-hidden">
+    <div className="w-full h-full flex items-center justify-center">
       <iframe
         id="review-iframe"
-        src={`${BASE_URL_SERVER}/proxy-preview?url=${encodeURIComponent(
-          portfolioLink
-        )}`}
+        src={`${BASE_URL_SERVER}/proxy-dashboard?url=${encodeURIComponent(
+          data.portfolioLink
+        )}&userId=${encodeURIComponent(id)}`}
         width="100%"
         height="100%"
         style={{ border: "none", overflow: "hidden" }}

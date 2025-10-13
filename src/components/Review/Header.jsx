@@ -6,21 +6,24 @@ import Floop_Image from "../../assets/floop.png";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-const Header = ({ data, commentMode, toggleCommentMode }) => {
+import Plane_Image from "../../assets/plane.png";
+const Header = ({ portfolio, commentMode, toggleCommentMode }) => {
   return (
     <div className="w-full flex px-5 py-3 justify-between items-center">
       <div className="flex gap-5 h-[30px]">
         <img src={Floop_Image} alt="Floop Image" className="w-max" />
-        {data?.reviewerName && (
+        {portfolio.revieweeName && (
           <Label className="text-xs">
-            Giving feedback to{" "}
-            <span className="text-[#3a3cff]">{data?.reviewerName}</span>
+            Giving feedback to
+            <span className="text-[#3a3cff] -ml-1">
+              {portfolio?.revieweeName}
+            </span>
           </Label>
         )}
       </div>
-      {data?.portfolioLink && (
+      {portfolio?.portfolioLink && (
         <span className="text-xs bg-[#e5eaf8] text-[#3a3cff] px-5 py-1 rounded-md">
-          {data?.portfolioLink}
+          {portfolio?.portfolioLink}
         </span>
       )}
 
@@ -37,12 +40,12 @@ const Header = ({ data, commentMode, toggleCommentMode }) => {
           <img
             src={commentMode ? Mouse_Color_Image : Mouse_Image}
             alt="Mouse"
-            className="w-[12px]"
+            className="w-[12px] -ml-1"
           />
         </Button>
         <Button className="bg-white w-[150px] rounded-4xl text-black text-[10px] hover:bg-white">
-          Portfolio review goals
-          {/* <img src={Sign_Image} alt="Mouse" className="w-[12px]" /> */}
+          Share feedback
+          <img src={Plane_Image} alt="Plane" className="w-[13px] -ml-1" />
         </Button>
       </div>
     </div>

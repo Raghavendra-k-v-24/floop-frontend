@@ -1,7 +1,6 @@
-import { ArrowLeft, Goal } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Label } from "@/components/ui/label";
 
-import { useState } from "react";
 import ReviewerDetails from "./ReviewerDetails";
 import Goals from "./Goals";
 const FloopYourWebsite = ({ setStep, internalStep, setInternalStep }) => {

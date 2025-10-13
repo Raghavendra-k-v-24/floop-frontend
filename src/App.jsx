@@ -12,7 +12,7 @@ import { Toaster } from "@/components/ui/sonner";
 const App = () => {
   return (
     <div className="min-h-screen w-full">
-      <Toaster position="top-center" richColors />
+      <Toaster position="bottom-right" richColors />
       <Outlet />
     </div>
   );

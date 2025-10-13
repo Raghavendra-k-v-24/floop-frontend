@@ -2,11 +2,47 @@ import { ArrowLeft } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import CustomInput from "../Onboarding_Back/CustomInput";
 import { Button } from "@/components/ui/button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { BASE_URL_SERVER } from "../../../config";
+import { LoggedInUser, SignUpFormData } from "../../redux";
+import { toast } from "sonner";
+import { useNavigate } from "react-router";
+import { encryptData } from "../../encryption";
+import { BASE_URL_CLIENT } from "../../../config";
 const FloopOtherWebsite = ({ setStep }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const signupFormData = useSelector((state) => state.signupFormData);
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        `${BASE_URL_SERVER}/signup`,
+        signupFormData
+      );
+      if (response.status == 200) {
+        const portfolioId = response.data.data;
+        const reviewLink = `${BASE_URL_CLIENT}/${portfolioId}`;
+        dispatch(SignUpFormData.setSignUpFormData({ reviewLink: reviewLink }));
+        const userData = {
+          name: signupFormData.name,
+          email: signupFormData.email,
+          role: signupFormData.role,
+        };
+        const encryptedUserData = encryptData(userData);
+        dispatch(LoggedInUser.setLoggedInUser(encryptedUserData));
+        navigate(`/${portfolioId}`);
+      }
+    } catch (err) {
+      toast.error(err.response.data.data);
+    }
+  };
   return (
-    <div className="w-full h-full flex flex-col gap-5">
+    <form
+      className="w-full h-full flex flex-col gap-5"
+      onSubmit={handleFormSubmit}
+    >
       {/* Back button */}
       <div
         className="w-[120px] h-[40px] bg-[#F9FAFB] border-[2px] border-[#EBEFF4] rounded-3xl flex items-center justify-between px-4"
@@ -54,7 +90,7 @@ const FloopOtherWebsite = ({ setStep }) => {
       >
         Start giving feedback
       </Button>
-    </div>
+    </form>
   );
 };
 

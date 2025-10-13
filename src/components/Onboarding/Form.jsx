@@ -4,7 +4,6 @@ import RoleSelector from "./RoleSelector";
 import FloopYourWebsite from "./FloopYourWebsite";
 import ShareLink from "./ShareLink";
 import FloopOtherWebsite from "./FloopOtherWebsite";
-import { useSelector } from "react-redux";
 
 const Form = () => {
   const [step, setStep] = useState(0);

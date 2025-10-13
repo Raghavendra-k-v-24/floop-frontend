@@ -2,16 +2,52 @@ import { Label } from "@/components/ui/label";
 import { ArrowLeft } from "lucide-react";
 import Received from "../../assets/received.png";
 import Globe from "../../assets/globe.png";
-import { useDispatch } from "react-redux";
-import { SignUpFormData } from "../../redux";
+import { useDispatch, useSelector } from "react-redux";
+import { LoggedInUser, SignUpFormData } from "../../redux";
+import { toast } from "sonner";
+import axios from "axios";
+import { BASE_URL_SERVER } from "../../../config";
+import { encryptData } from "../../encryption";
+import { useNavigate } from "react-router";
 const RoleSelector = ({ setStep }) => {
   const dispatch = useDispatch();
-  const handleChange = (name = "role", value, nextIndex) => {
-    dispatch(SignUpFormData.setSignUpFormData({ [name]: value }));
-    setStep(nextIndex);
+  const navigate = useNavigate();
+  const signupFormData = useSelector((state) => state.signupFormData);
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const buttonClicked = e.nativeEvent.submitter;
+    if (buttonClicked.name === "reviewee") {
+      dispatch(SignUpFormData.setSignUpFormData({ "role": "reviewee" }));
+      setStep(2);
+    } else if (buttonClicked.name === "revieweer") {
+      dispatch(SignUpFormData.setSignUpFormData({ "role": "reviewer" }));
+      setStep(3);
+    }
   };
+
+  const handleSkip = async () => {
+    try {
+      const data = { ...signupFormData, skip: true };
+      await axios.post(`${BASE_URL_SERVER}/signup`, data);
+      const userData = {
+        name: signupFormData.name,
+        email: signupFormData.email,
+        role: signupFormData.role,
+      };
+      const encryptedUserData = encryptData(userData);
+      dispatch(LoggedInUser.setLoggedInUser(encryptedUserData));
+      navigate(`/dashboard`);
+    } catch (err) {
+      toast.error(err.response.data.data);
+    }
+  };
+
   return (
-    <div className="w-full h-full flex flex-col gap-5">
+    <form
+      className="w-full h-full flex flex-col gap-5"
+      onSubmit={handleFormSubmit}
+    >
       {/* Back button */}
       <div
         className="w-[120px] h-[40px] bg-[#F9FAFB] border-[2px] border-[#EBEFF4] rounded-3xl flex items-center justify-between px-4"
@@ -24,9 +60,10 @@ const RoleSelector = ({ setStep }) => {
       </div>
       <Label className="text-lg">What do you want to do?</Label>
       <div className="w-full flex flex-col gap-2">
-        <div
-          className="w-full h-[200px] bg-[#3A3CFF] rounded-3xl flex items-center justify-center flex-col gap-5"
-          onClick={() => handleChange("role", "reviewee", 2)}
+        <button
+          className="w-full h-[200px] bg-[#3A3CFF] hover:bg-[#3A3CFF]/95 rounded-3xl flex items-center justify-center flex-col gap-5 hover:cursor-pointer"
+          name="reviewee"
+          type="submit"
         >
           <img
             src={Received}
@@ -37,10 +74,11 @@ const RoleSelector = ({ setStep }) => {
           <Label className="text-xs text-neutral-300 text-center font-light">
             Get feedback on your live website from your peers/mentors/reviewers
           </Label>
-        </div>
-        <div
-          className="w-full h-[200px] bg-[#FF8030] rounded-3xl flex items-center justify-center flex-col gap-5"
-          onClick={() => handleChange("role", "reviewer", 3)}
+        </button>
+        <button
+          className="w-full h-[200px] bg-[#FF8030] hover:bg-[#FF8030]/95 rounded-3xl flex items-center justify-center flex-col gap-5 hover:cursor-pointer"
+          type="submit"
+          name="reviewer"
         >
           <img
             src={Globe}
@@ -53,12 +91,15 @@ const RoleSelector = ({ setStep }) => {
           <Label className="text-xs text-neutral-100 text-center font-light">
             Give feedback to your friend/peer/client’s live websites/portfolios
           </Label>
-        </div>
+        </button>
       </div>
-      <Label className="w-full flex justify-center text-sm text-neutral-500 font-light">
+      <Label
+        className="w-full flex justify-center text-sm text-neutral-500 font-light hover:cursor-pointer hover:text-neutral-900"
+        onClick={handleSkip}
+      >
         SKIP - I am just exploring
       </Label>
-    </div>
+    </form>
   );
 };
 

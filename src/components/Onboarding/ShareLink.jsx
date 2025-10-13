@@ -11,8 +11,16 @@ import {
 } from "@/components/ui/select";
 import Copy_Image from "../../assets/copy_white.png";
 import { useDispatch, useSelector } from "react-redux";
-import { SignUpFormData } from "../../redux";
+import { LoggedInUser, SignUpFormData } from "../../redux";
+import axios from "axios";
+import { BASE_URL_SERVER } from "../../../config";
+import { toast } from "sonner";
+import { useNavigate } from "react-router";
+import { encryptData } from "../../encryption";
+import { BASE_URL_CLIENT } from "../../../config";
+
 const ShareLink = ({ setStep }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const signupFormData = useSelector((state) => state.signupFormData);
 
@@ -24,8 +32,37 @@ const ShareLink = ({ setStep }) => {
   const handleSelectChange = (value) => {
     dispatch(SignUpFormData.setSignUpFormData({ "accessType": value }));
   };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const parts = signupFormData.reviewLink.split("/");
+      const portfolioId = parts[parts.length - 1];
+      await axios.put(`${BASE_URL_SERVER}/portfolio`, {
+        portfolioId: portfolioId,
+        emailInvites: signupFormData.emailInvites,
+        accessType: signupFormData.accessType,
+      });
+      await navigator.clipboard.writeText(`${BASE_URL_CLIENT}/${portfolioId}`);
+      toast.success("Copied to clipboard");
+      const userData = {
+        name: signupFormData.name,
+        email: signupFormData.email,
+        role: signupFormData.role,
+      };
+      const encryptedUserData = encryptData(userData);
+      dispatch(LoggedInUser.setLoggedInUser(encryptedUserData));
+      navigate("/dashboard");
+    } catch (err) {
+      toast.error(err.response.data.data);
+    }
+  };
+
   return (
-    <div className="w-full h-full flex flex-col gap-5">
+    <form
+      className="w-full h-full flex flex-col gap-5"
+      onSubmit={handleFormSubmit}
+    >
       {/* Back button */}
       <div
         className="w-[120px] h-[40px] bg-[#F9FAFB] border-[2px] border-[#EBEFF4] rounded-3xl flex items-center justify-between px-4"
@@ -84,7 +121,7 @@ const ShareLink = ({ setStep }) => {
         Copy link and go to dashboard
         <img src={Copy_Image} alt="Copy" className="w-[18px]" />
       </Button>
-    </div>
+    </form>
   );
 };
 

@@ -7,7 +7,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { useDispatch, useSelector } from "react-redux";
 import { SignUpFormData } from "../../redux";
 import axios from "axios";
-import BASE_URL from "../../../config";
+import { BASE_URL_SERVER } from "../../../config";
+import { toast } from "sonner";
+import { BASE_URL_CLIENT } from "../../../config";
 const Goals = ({ setStep }) => {
   const dispatch = useDispatch();
   const signupFormData = useSelector((state) => state.signupFormData);
@@ -41,11 +43,21 @@ const Goals = ({ setStep }) => {
   };
 
   const handleFormSubmit = async (e) => {
-    console.log("coming");
     e.preventDefault();
-    const response = await axios.post(`${BASE_URL}/signup`, signupFormData);
-    console.log(response);
-    // setStep(4);
+    try {
+      const response = await axios.post(
+        `${BASE_URL_SERVER}/signup`,
+        signupFormData
+      );
+      if (response.status == 200) {
+        const portfolioId = response.data.data;
+        const reviewLink = `${BASE_URL_CLIENT}/${portfolioId}`;
+        dispatch(SignUpFormData.setSignUpFormData({ reviewLink: reviewLink }));
+        setStep(4);
+      }
+    } catch (err) {
+      toast.error(err.response.data.data);
+    }
   };
   return (
     <form

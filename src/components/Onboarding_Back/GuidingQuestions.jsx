@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import Plus_Image from "../../assets/plus.png";
 import Tick_Image from "../../assets/tick.png";
 import { useState } from "react";
-import BASE_URL from "../../../config";
+import { BASE_URL_CLIENT, BASE_URL_SERVER } from "../../../config";
 import axios from "axios";
 const GuidingQuestions = ({ setStep, data, setData }) => {
   const [selected, setSelected] = useState([]);
@@ -31,7 +31,7 @@ const GuidingQuestions = ({ setStep, data, setData }) => {
     e.preventDefault();
     setStep(3);
     try {
-      const user_response = await axios.post(`${BASE_URL}/user`, {
+      const user_response = await axios.post(`${BASE_URL_SERVER}/user`, {
         name: data.name,
         email: data.email,
         password: data.password,
@@ -39,17 +39,20 @@ const GuidingQuestions = ({ setStep, data, setData }) => {
       if (user_response.status == 200) {
         const user_id = user_response.data.data;
 
-        const portfolio_response = await axios.post(`${BASE_URL}/portfolio`, {
-          portfolioLink: data.portfolioLink,
-          goals: data.goals,
-          associatedToUser: user_id,
-        });
+        const portfolio_response = await axios.post(
+          `${BASE_URL_SERVER}/portfolio`,
+          {
+            portfolioLink: data.portfolioLink,
+            goals: data.goals,
+            associatedToUser: user_id,
+          }
+        );
 
         if (portfolio_response.status == 200) {
           const portfolio_id = portfolio_response.data.data;
 
           const token_response = await axios.post(
-            `${BASE_URL}/generate-token`,
+            `${BASE_URL_SERVER}/generate-token`,
             {
               portfolioId: portfolio_id,
               reviewerName: data.reviewerName,
@@ -62,7 +65,7 @@ const GuidingQuestions = ({ setStep, data, setData }) => {
 
             setData({
               ...data,
-              "reviewLink": `http://localhost:5174/${token}`,
+              "reviewLink": `${BASE_URL_CLIENT}/${token}`,
             });
           } else {
           }

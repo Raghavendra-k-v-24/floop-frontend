@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import Floop_Image from "../../assets/floop.png";
 import { Button } from "@/components/ui/button";
-import Review from "../Review/Review";
+import { BASE_URL_SERVER } from "../../../config";
 const Preview = ({ data }) => {
   return (
     <div className="w-full h-full flex justify-center">
@@ -48,7 +48,7 @@ const Preview = ({ data }) => {
             {data.portfolioLink && (
               <iframe
                 id="review-iframe"
-                src={`http://localhost:3000/proxy-preview?url=${encodeURIComponent(
+                src={`${BASE_URL_SERVER}/proxy-preview?url=${encodeURIComponent(
                   data?.portfolioLink
                 )}`}
                 width="100%"

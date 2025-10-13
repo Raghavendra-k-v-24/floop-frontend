@@ -63,6 +63,7 @@ const rootReducerWithReset = (state, action) => {
 const persistConfig = {
   key: "root",
   storage,
+  blacklist: ["signupFormData"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducerWithReset);
