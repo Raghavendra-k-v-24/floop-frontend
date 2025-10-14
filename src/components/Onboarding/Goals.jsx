@@ -96,7 +96,7 @@ const Goals = ({ setStep }) => {
             onChange={handleChange}
           />
           <Button
-            className="bg-[#3a3cff] hover:bg-[#3a3cff]/95 px-2"
+            className="bg-[#3a3cff] hover:bg-[#3a3cff]/95 px-2 hover:cursor-pointer"
             type="button"
             onClick={handleAdd}
           >
@@ -159,7 +159,7 @@ const Goals = ({ setStep }) => {
         </div>
       </div>
       <Button
-        className="bg-[#3a3cff] w-full h-[45px] rounded-4xl hover:bg-[#3a3cff]/95 mt-2"
+        className="bg-[#3a3cff] w-full h-[45px] rounded-4xl hover:bg-[#3a3cff]/95 mt-2 hover:cursor-pointer"
         type="submit"
       >
         Generate a portfolio review link

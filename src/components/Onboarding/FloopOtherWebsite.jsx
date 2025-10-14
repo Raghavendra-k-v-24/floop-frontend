@@ -85,7 +85,7 @@ const FloopOtherWebsite = ({ setStep }) => {
         value={signupFormData.revieweeEmail}
       />
       <Button
-        className="bg-[#3a3cff] w-full h-[45px] rounded-4xl hover:bg-[#3a3cff]/95 mt-5"
+        className="bg-[#3a3cff] w-full h-[45px] rounded-4xl hover:bg-[#3a3cff]/95 mt-5 hover:cursor-pointer"
         type="submit"
       >
         Start giving feedback
