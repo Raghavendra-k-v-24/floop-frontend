@@ -10,36 +10,52 @@ import axios from "axios";
 import { BASE_URL_SERVER } from "../../../config";
 import { toast } from "sonner";
 import { BASE_URL_CLIENT } from "../../../config";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import ShareLink from "./ShareLink";
 const Goals = ({ setStep }) => {
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const signupFormData = useSelector((state) => state.signupFormData);
-  const [selected, setSelected] = useState(
-    signupFormData.goals
-      ? signupFormData.goals
-          .split(",")
-          .map((g) => g.trim())
-          .filter(Boolean)
-      : []
-  );
-  const tags = [
-    "I want to get feedback on a particular case study",
-    "Improve story telling",
-    "I want a perspective of a hiring manager",
-  ];
-  const toggleTag = (tag) => {
-    setSelected((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-    );
-  };
+  // const [selected, setSelected] = useState(
+  //   signupFormData.goals
+  //     ? signupFormData.goals
+  //         .split(",")
+  //         .map((g) => g.trim())
+  //         .filter(Boolean)
+  //     : []
+  // );
+  const goalsList = signupFormData.goals.split(",").filter(Boolean);
+  // const tags = [
+  //   "I want to get feedback on a particular case study",
+  //   "Improve story telling",
+  //   "I want a perspective of a hiring manager",
+  // ];
+  // const toggleTag = (tag) => {
+  //   setSelected((prev) =>
+  //     prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+  //   );
+  // };
+
+  const [goals, setGoals] = useState(signupFormData.goals);
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    dispatch(SignUpFormData.setSignUpFormData({ [name]: value }));
+    const { value } = e.target;
+    // dispatch(SignUpFormData.setSignUpFormData({ [name]: value }));
+    setGoals(value);
   };
 
   const handleAdd = () => {
-    dispatch(
-      SignUpFormData.setSignUpFormData({ "goals": selected.join(", ") })
-    );
+    dispatch(SignUpFormData.setSignUpFormData({ "goals": goals }));
   };
 
   const handleFormSubmit = async (e) => {
@@ -53,7 +69,8 @@ const Goals = ({ setStep }) => {
         const portfolioId = response.data.data;
         const reviewLink = `${BASE_URL_CLIENT}/${portfolioId}`;
         dispatch(SignUpFormData.setSignUpFormData({ reviewLink: reviewLink }));
-        setStep(4);
+        // setStep(4);
+        setOpen(true);
       }
     } catch (err) {
       toast.error(err.response.data.data);
@@ -61,20 +78,20 @@ const Goals = ({ setStep }) => {
   };
   return (
     <form
-      className="w-full h-full flex flex-col gap-5"
+      className="w-full h-full flex flex-col gap-5 "
       onSubmit={handleFormSubmit}
     >
       <div className="grid w-full items-center gap-3 relative">
         <Label htmlFor="picture" className="text-xs text-black">
           Goals for the portfolio review (Max 3)
         </Label>
-        <div className="flex gap-2 items-center">
+        <div className="w-full flex gap-2 items-center overflow-hidden">
           <Textarea
             type="text"
             name="goals"
             placeholder="What do you want to get out from portfolio review?"
-            value={signupFormData.goals}
-            className="w-full"
+            value={goals}
+            className="max-w-full"
             required
             onChange={handleChange}
           />
@@ -86,8 +103,8 @@ const Goals = ({ setStep }) => {
             <img src={Plus_Image} alt="Plus" className="w-max" />
           </Button>
         </div>
-        <div className="flex flex-col gap-3">
-          {tags.length > 0 && (
+        <div className="flex flex-wrap gap-3">
+          {/* {tags.length > 0 && (
             <span
               key={tags[0]}
               onClick={() => toggleTag(tags[0])}
@@ -128,8 +145,17 @@ const Goals = ({ setStep }) => {
                   />
                 )}
               </span>
+            ))} 
+          </div> */}
+          {goalsList.length > 0 &&
+            goalsList.map((item, index) => (
+              <Label
+                key={index}
+                className="w-max h-max px-2 py-1 rounded-sm bg-[#EBEFF4] text-[#6D6D6D]"
+              >
+                {item}
+              </Label>
             ))}
-          </div>
         </div>
       </div>
       <Button
@@ -138,6 +164,29 @@ const Goals = ({ setStep }) => {
       >
         Generate a portfolio review link
       </Button>
+      <Dialog open={open}>
+        <form>
+          {/* <DialogTrigger asChild>
+            <Button variant="outline">Open Dialog</Button>
+          </DialogTrigger> */}
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Sharing your portfolio</DialogTitle>
+              <DialogDescription>
+                You can send this link to the person that will give you feedback
+                on your portfolio/website.
+              </DialogDescription>
+            </DialogHeader>
+            <ShareLink />
+            {/* <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DialogClose>
+              <Button type="submit">Save changes</Button>
+            </DialogFooter> */}
+          </DialogContent>
+        </form>
+      </Dialog>
     </form>
   );
 };

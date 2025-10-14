@@ -9,17 +9,29 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import axios from "axios";
+import { toast } from "sonner";
+import { BASE_URL_SERVER } from "../../../config";
 const Signup = ({ setStep }) => {
   const [passwordMatch, setPasswordMatch] = useState(true);
   const signupFormData = useSelector((state) => state.signupFormData);
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const confirmPassword = e.target.confirmPassword.value;
-    if (signupFormData.password !== confirmPassword) {
-      setPasswordMatch(false);
-    } else {
-      setPasswordMatch(true);
-      setStep(1);
+    try {
+      const confirmPassword = e.target.confirmPassword.value;
+      if (signupFormData.password !== confirmPassword) {
+        setPasswordMatch(false);
+      } else {
+        setPasswordMatch(true);
+        const response = await axios.get(
+          `${BASE_URL_SERVER}/user-exists?email=${signupFormData.email}`
+        );
+        if (response.status == 200) {
+          setStep(1);
+        }
+      }
+    } catch (err) {
+      toast.error(err.response.data.data);
     }
   };
   return (

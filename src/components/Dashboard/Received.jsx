@@ -24,7 +24,7 @@ const Received = ({ portfolio }) => {
     <div className="w-[calc(100%-380px)] h-full flex p-10 flex-col gap-5 ">
       <div className="w-full h-max flex justify-between">
         <Label className="text-xl">Received Feedbacks</Label>
-        <Button className="rounded-4xl px-6 text-xs text-white bg-gradient-to-br from-[#383BFE] to-[#FF8030] hover:from-[#FF8030] hover:to-[#383BFE] hover:cursor-pointer">
+        <Button className="rounded-4xl px-6 text-xs text-white bg-[#3A3CFF] hover:cursor-pointer hover:bg-[#3A3CFF]/95">
           Share your website
         </Button>
       </div>

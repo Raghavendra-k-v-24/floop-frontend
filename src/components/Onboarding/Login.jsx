@@ -72,12 +72,14 @@ const Login = () => {
           onChange={handleChange}
         />
       </div>
-      <Button
-        className="bg-[#3a3cff] w-full h-[45px] rounded-4xl hover:bg-[#3a3cff]/95"
-        type="submit"
-      >
-        Login
-      </Button>
+      <div className="w-full flex-1 flex items-end justify-center">
+        <Button
+          className="bg-[#3a3cff] w-full h-[45px] rounded-4xl hover:bg-[#3a3cff]/95"
+          type="submit"
+        >
+          Login
+        </Button>
+      </div>
     </form>
   );
 };

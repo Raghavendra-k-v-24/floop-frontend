@@ -17,7 +17,7 @@ const Form = () => {
       setInternalStep={setInternalStep}
     />,
     <FloopOtherWebsite setStep={setStep} />,
-    <ShareLink setStep={setStep} />,
+    // <ShareLink setStep={setStep} />,
   ];
   return (
     <div className="w-[400px] h-max bg-white rounded-2xl shadow-xl flex flex-col px-5 py-10">

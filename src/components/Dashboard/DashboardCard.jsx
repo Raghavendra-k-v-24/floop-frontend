@@ -11,7 +11,7 @@ const DashboardCard = ({ item }) => {
   };
   return (
     <div
-      className="min-w-[300px] h-[350px] flex-shrink-0 bg-neutral-100 rounded-2xl overflow-hidden flex flex-col"
+      className="min-w-[300px] h-[350px] flex-shrink-0 bg-neutral-100 rounded-2xl overflow-hidden flex flex-col hover:cursor-pointer"
       onClick={handleCardClick}
     >
       <Iframe portfolioLink={item.portfolioLink} />

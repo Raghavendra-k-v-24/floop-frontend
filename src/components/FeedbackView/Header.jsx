@@ -1,8 +1,13 @@
+import { useNavigate } from "react-router";
 import Floop_Image from "../../assets/floop.png";
 const Header = ({ portfolio }) => {
+  const navigate = useNavigate();
   return (
     <div className="w-full flex px-5 py-3 justify-between items-center">
-      <div className="flex gap-5 h-[30px]">
+      <div
+        className="flex gap-5 h-[30px] hover:cursor-pointer"
+        onClick={() => navigate("/dashboard")}
+      >
         <img src={Floop_Image} alt="Floop Image" className="w-max" />
       </div>
 

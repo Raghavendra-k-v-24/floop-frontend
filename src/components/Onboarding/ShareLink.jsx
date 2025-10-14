@@ -18,8 +18,9 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router";
 import { encryptData } from "../../encryption";
 import { BASE_URL_CLIENT } from "../../../config";
+import { useState } from "react";
 
-const ShareLink = ({ setStep }) => {
+const ShareLink = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const signupFormData = useSelector((state) => state.signupFormData);
@@ -64,7 +65,7 @@ const ShareLink = ({ setStep }) => {
       onSubmit={handleFormSubmit}
     >
       {/* Back button */}
-      <div
+      {/* <div
         className="w-[120px] h-[40px] bg-[#F9FAFB] border-[2px] border-[#EBEFF4] rounded-3xl flex items-center justify-between px-4"
         onClick={() => {
           setStep(2);
@@ -81,7 +82,7 @@ const ShareLink = ({ setStep }) => {
           You can send this link to the person that will give you feedback on
           your portfolio/website.
         </Label>
-      </div>
+      </div> */}
       <div className="flex gap-2">
         <Input
           type="text"
@@ -89,8 +90,13 @@ const ShareLink = ({ setStep }) => {
           placeholder="Add comma seperated emails to invite"
           value={signupFormData.emailInvites}
           onChange={handleChange}
+          disabled={true}
         />
-        <Button className="bg-[#6D6D6D] rounded-lg" type="submit">
+        <Button
+          className="bg-[#6D6D6D] rounded-lg"
+          type="submit"
+          disabled={true}
+        >
           Invite
         </Button>
       </div>
@@ -100,6 +106,7 @@ const ShareLink = ({ setStep }) => {
         <Select
           value={signupFormData.accessType}
           onValueChange={handleSelectChange}
+          disabled={true}
         >
           <SelectTrigger className="w-max">
             <SelectValue placeholder="Access Type" />

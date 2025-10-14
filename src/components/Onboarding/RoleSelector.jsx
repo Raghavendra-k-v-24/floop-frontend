@@ -20,7 +20,7 @@ const RoleSelector = ({ setStep }) => {
     if (buttonClicked.name === "reviewee") {
       dispatch(SignUpFormData.setSignUpFormData({ "role": "reviewee" }));
       setStep(2);
-    } else if (buttonClicked.name === "revieweer") {
+    } else if (buttonClicked.name === "reviewer") {
       dispatch(SignUpFormData.setSignUpFormData({ "role": "reviewer" }));
       setStep(3);
     }

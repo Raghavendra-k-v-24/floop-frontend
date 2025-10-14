@@ -1,8 +1,7 @@
 import Received from "../../assets/received.png";
 import Floop_Image from "../../assets/floop.png";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,9 +10,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Label } from "@/components/ui/label";
 import { persistor, resetApp } from "../../redux";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { decryptData } from "../../encryption";
 const Header = ({ setPage }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,6 +24,16 @@ const Header = ({ setPage }) => {
     localStorage.clear();
     navigate("/");
   };
+  const loggedInUser = useSelector((state) => state.loggedInUser.data);
+  const decryptUser = decryptData(loggedInUser);
+  const initials = decryptUser.name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
+
   return (
     <div className="w-full flex px-5 py-3 justify-between items-center">
       <div className="flex gap-5 h-[30px]">
@@ -33,7 +44,7 @@ const Header = ({ setPage }) => {
         <TabsList className="w-[300px] h-[40px] rounded-4xl px-2">
           <TabsTrigger
             value="received"
-            className={`group text-xs rounded-4xl data-[state=active]:bg-[#3A3CFF] data-[state=active]:text-white`}
+            className={`group text-xs rounded-4xl data-[state=active]:bg-[#3A3CFF] data-[state=active]:text-white hover:cursor-pointer`}
           >
             Received
             <img
@@ -44,7 +55,7 @@ const Header = ({ setPage }) => {
           </TabsTrigger>
           <TabsTrigger
             value="given"
-            className={`group text-xs rounded-4xl data-[state=active]:bg-[#3A3CFF] data-[state=active]:text-white`}
+            className={`group text-xs rounded-4xl data-[state=active]:bg-[#3A3CFF] data-[state=active]:text-white hover:cursor-pointer`}
           >
             Given
             <img
@@ -57,17 +68,16 @@ const Header = ({ setPage }) => {
       </Tabs>
 
       <div className="w-max h-max flex items-center gap-2">
-        <Button className="rounded-4xl px-6 text-xs text-white bg-gradient-to-br from-[#383BFE] to-[#FF8030] hover:from-[#FF8030] hover:to-[#383BFE] hover:cursor-pointer">
-          Create review link
-        </Button>
-
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <div className="w-max h-full border-[2px] rounded-4xl flex items-center px-4 py-2 text-xs gap-1 bg-white border-[#EBEFF4]">
+            <div className="w-max h-full border-[1px] rounded-4xl flex items-center px-4 py-2 text-xs gap-1 bg-white border-neutral-200 hover:cursor-pointer">
               <span>Profile</span>
               <Avatar className="size-[20px]">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
+                <AvatarFallback>
+                  <div className="w-full h-full bg-neutral-700 flex items-center justify-center">
+                    <Label className="text-[8px] text-white">{initials}</Label>
+                  </div>
+                </AvatarFallback>
               </Avatar>
             </div>
           </DropdownMenuTrigger>
