@@ -122,7 +122,7 @@ const ShareLink = () => {
         <Label className="text-sm">Owner</Label>
       </div>
       <Button
-        className="bg-[#3a3cff] w-full h-[45px] rounded-4xl hover:bg-[#3a3cff]/95 mt-2 flex justify-between"
+        className="bg-[#3a3cff] w-full h-[45px] rounded-4xl hover:bg-[#3a3cff]/95 mt-2 flex justify-between hover:cursor-pointer"
         type="submit"
       >
         Copy link and go to dashboard
