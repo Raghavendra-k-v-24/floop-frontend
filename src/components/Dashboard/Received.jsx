@@ -5,7 +5,9 @@ import { useSelector } from "react-redux";
 import { decryptData } from "../../encryption";
 import DashboardCard from "./DashboardCard";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router";
 const Received = ({ portfolio }) => {
+  const navigate = useNavigate();
   const oneWeekAgo = new Date();
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
   const loggedInUser = useSelector((state) => state.loggedInUser.data);
@@ -24,7 +26,10 @@ const Received = ({ portfolio }) => {
     <div className="w-[calc(100%-380px)] h-full flex p-10 flex-col gap-5 ">
       <div className="w-full h-max flex justify-between">
         <Label className="text-xl">Received Feedbacks</Label>
-        <Button className="rounded-4xl px-6 text-xs text-white bg-[#3A3CFF] hover:cursor-pointer hover:bg-[#3A3CFF]/95">
+        <Button
+          className="rounded-4xl px-6 text-xs text-white bg-[#3A3CFF] hover:cursor-pointer hover:bg-[#3A3CFF]/95"
+          onClick={() => navigate("/share-website")}
+        >
           Share your website
         </Button>
       </div>
@@ -39,7 +44,7 @@ const Received = ({ portfolio }) => {
                 whileTap={{ scale: 0.98 }}
                 className="h-full"
               >
-                <DashboardCard item={item} />
+                <DashboardCard item={item} panel="received" />
               </motion.div>
             ))
           ) : (
@@ -58,7 +63,7 @@ const Received = ({ portfolio }) => {
                 whileTap={{ scale: 0.98 }}
                 className="h-full"
               >
-                <DashboardCard item={item} />
+                <DashboardCard item={item} panel="received" />
               </motion.div>
             ))
           ) : (

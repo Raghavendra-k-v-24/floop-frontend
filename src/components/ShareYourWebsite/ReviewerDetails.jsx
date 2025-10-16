@@ -1,9 +1,7 @@
-import { useSelector } from "react-redux";
-import CustomInput from "../Onboarding/CustomInput";
+import CustomInput from "../ShareYourWebsite/CustomInput";
 import { Button } from "@/components/ui/button";
 
-const ReviewerDetails = ({ setInternalStep }) => {
-  const signupFormData = useSelector((state) => state.signupFormData);
+const ReviewerDetails = ({ setInternalStep, data, setData }) => {
   const handleFormSubmit = () => {
     setInternalStep(1);
   };
@@ -17,14 +15,16 @@ const ReviewerDetails = ({ setInternalStep }) => {
         placeholder="https://"
         type="url"
         name="portfolioLink"
-        value={signupFormData.portfolioLink}
+        value={data.portfolioLink}
+        setData={setData}
       />
       <CustomInput
         label="Reviewer's name"
         placeholder="Daisy"
         type="text"
         name="reviewerName"
-        value={signupFormData.reviewerName}
+        value={data.reviewerName}
+        setData={setData}
       />
       <CustomInput
         label="Reviewer's email (optional)"
@@ -32,7 +32,8 @@ const ReviewerDetails = ({ setInternalStep }) => {
         type="text"
         name="reviewerEmail"
         required={false}
-        value={signupFormData.reviewerEmail}
+        value={data.reviewerEmail}
+        setData={setData}
       />
       <Button
         className="bg-[#3a3cff] w-full h-[45px] rounded-4xl hover:bg-[#3a3cff]/95 mt-5 hover:cursor-pointer"

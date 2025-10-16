@@ -1,11 +1,8 @@
 import Mouse_Image from "../../assets/mouse.png";
 import Mouse_Color_Image from "../../assets/mouse_color.png";
-import Received from "../../assets/received.png";
 import { Label } from "@/components/ui/label";
 import Floop_Image from "../../assets/floop.png";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Plane_Image from "../../assets/plane.png";
 const Header = ({ portfolio, commentMode, toggleCommentMode }) => {
   return (
@@ -22,18 +19,18 @@ const Header = ({ portfolio, commentMode, toggleCommentMode }) => {
         )}
       </div>
       {portfolio?.portfolioLink && (
-        <span className="text-xs bg-[#e5eaf8] text-[#3a3cff] px-5 py-1 rounded-md">
-          {portfolio?.portfolioLink}
-        </span>
+        <div className="w-[300px] py-2 bg-white text-center text-xs text-[#6D6D6D] rounded-full">
+          {portfolio.portfolioLink}
+        </div>
       )}
 
       <div className="flex gap-2">
         <Button
-          className={`bg-white w-max rounded-4xl ${
+          className={`bg-white w-[150px] rounded-4xl ${
             commentMode
               ? "text-[#3C3FFE] border-[1px] border-[#3C3FFE]"
               : "text-black"
-          } text-[10px] hover:bg-white`}
+          } text-[10px] hover:bg-white hover:cursor-pointer`}
           onClick={toggleCommentMode}
         >
           Add Feedback
@@ -43,7 +40,7 @@ const Header = ({ portfolio, commentMode, toggleCommentMode }) => {
             className="w-[12px] -ml-1"
           />
         </Button>
-        <Button className="bg-white w-[150px] rounded-4xl text-black text-[10px] hover:bg-white">
+        <Button className="bg-white w-[150px] rounded-4xl text-black text-[10px] hover:bg-white hover:cursor-pointer">
           Share feedback
           <img src={Plane_Image} alt="Plane" className="w-[13px] -ml-1" />
         </Button>

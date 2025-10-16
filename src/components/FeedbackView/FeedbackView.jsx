@@ -6,7 +6,7 @@ import { BASE_URL_SERVER } from "../../../config";
 import { useParams } from "react-router";
 
 const FeedbackView = () => {
-  const { id } = useParams();
+  const { id, panel } = useParams();
   const [portfolio, setPortfolio] = useState([]);
   useEffect(() => {
     const getPortfolio = async () => {
@@ -17,7 +17,7 @@ const FeedbackView = () => {
   }, []);
   return (
     <div className="w-full min-h-screen flex flex-col bg-[#EBEFF4]">
-      <Header portfolio={portfolio} />
+      <Header portfolio={portfolio} panel={panel} />
       <Body id={id} portfolio={portfolio} />
     </div>
   );

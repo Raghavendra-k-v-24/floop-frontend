@@ -15,6 +15,8 @@ import { Provider, useSelector } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { decryptData } from "./encryption.js";
 import FeedbackView from "./components/FeedbackView/FeedbackView.jsx";
+import ShareYourWebsite from "./components/ShareYourWebsite/ShareYourWebsite.jsx";
+import GiveFeedback from "./components/GiveFeedback/GiveFeedback.jsx";
 
 const ProtectedRoute = ({ children }) => {
   const LoggedInUser = useSelector((state) => state.loggedInUser.data);
@@ -44,10 +46,26 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/feedback-view/:id",
+        path: "/feedback-view/:panel/:id",
         element: (
           <ProtectedRoute>
             <FeedbackView />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/share-website",
+        element: (
+          <ProtectedRoute>
+            <ShareYourWebsite />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/give-feedback",
+        element: (
+          <ProtectedRoute>
+            <GiveFeedback />
           </ProtectedRoute>
         ),
       },
@@ -56,11 +74,11 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <RouterProvider router={router}></RouterProvider>
-      </PersistGate>
-    </Provider>
-  </StrictMode>
+  // <StrictMode>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <RouterProvider router={router}></RouterProvider>
+    </PersistGate>
+  </Provider>
+  // </StrictMode>
 );

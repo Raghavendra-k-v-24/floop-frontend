@@ -1,5 +1,5 @@
 import { Label } from "@/components/ui/label";
-import CustomInput from "../Onboarding_Back/CustomInput";
+import CustomInput from "../Onboarding/CustomInput";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useSelector } from "react-redux";

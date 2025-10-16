@@ -1,9 +1,7 @@
-import Floop_Image from "../../assets/floop.png";
-import "react-device-frameset/styles/marvel-devices.min.css";
 import Background_Image from "../../assets/background.png";
+import Floop_Image from "../../assets/floop.png";
 import Form from "./Form";
-
-const Onboarding = () => {
+const ShareYourWebsite = () => {
   return (
     <div
       className={`min-h-screen w-full flex flex-col items-center p-10 gap-10 bg-cover`}
@@ -15,4 +13,4 @@ const Onboarding = () => {
   );
 };
 
-export default Onboarding;
+export default ShareYourWebsite;

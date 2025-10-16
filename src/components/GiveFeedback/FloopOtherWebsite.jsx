@@ -1,37 +1,36 @@
-import { ArrowLeft } from "lucide-react";
 import { Label } from "@/components/ui/label";
-import CustomInput from "../Onboarding/CustomInput";
+import CustomInput from "../GiveFeedback/CustomInput";
 import { Button } from "@/components/ui/button";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL_SERVER } from "../../../config";
-import { LoggedInUser, SignUpFormData } from "../../redux";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
-import { encryptData } from "../../encryption";
-import { BASE_URL_CLIENT } from "../../../config";
-const FloopOtherWebsite = ({ setStep }) => {
-  const dispatch = useDispatch();
+import { decryptData } from "../../encryption";
+
+import { useState } from "react";
+const FloopOtherWebsite = () => {
   const navigate = useNavigate();
-  const signupFormData = useSelector((state) => state.signupFormData);
+  const loggedInUser = useSelector((state) => state.loggedInUser.data);
+  const decryptUserData = decryptData(loggedInUser);
+  const [data, setData] = useState({
+    portfolioLink: "",
+    associatedToUser: decryptUserData.id,
+    revieweeName: "",
+    revieweeEmail: "",
+    reviewerName: decryptUserData.name,
+    reviewerEmail: decryptUserData.email,
+    goals: "",
+    emailInvites: "",
+    accessType: "view",
+  });
+  console.log(data);
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        `${BASE_URL_SERVER}/signup`,
-        signupFormData
-      );
+      const response = await axios.post(`${BASE_URL_SERVER}/portfolio`, data);
       if (response.status == 200) {
         const portfolioId = response.data.data;
-        const reviewLink = `${BASE_URL_CLIENT}/${portfolioId}`;
-        dispatch(SignUpFormData.setSignUpFormData({ reviewLink: reviewLink }));
-        const userData = {
-          name: signupFormData.name,
-          email: signupFormData.email,
-          role: signupFormData.role,
-        };
-        const encryptedUserData = encryptData(userData);
-        dispatch(LoggedInUser.setLoggedInUser(encryptedUserData));
         navigate(`/${portfolioId}`);
       }
     } catch (err) {
@@ -43,18 +42,6 @@ const FloopOtherWebsite = ({ setStep }) => {
       className="w-full h-full flex flex-col gap-5"
       onSubmit={handleFormSubmit}
     >
-      {/* Back button */}
-      <div
-        className="w-[120px] h-[40px] bg-[#F9FAFB] border-[2px] border-[#EBEFF4] rounded-3xl flex items-center justify-between px-4"
-        onClick={() => {
-          setStep(1);
-        }}
-      >
-        <div className="w-[20px] h-[20px] bg-neutral-400 rounded-full flex items-center justify-center">
-          <ArrowLeft size={15} strokeWidth={2} />
-        </div>
-        <Label className="">Go back</Label>
-      </div>
       <div className="flex flex-col gap-2">
         <Label className="text-lg font-bold">
           flooping someone else's portfolio
@@ -68,21 +55,24 @@ const FloopOtherWebsite = ({ setStep }) => {
         placeholder="https://"
         type="text"
         name="portfolioLink"
-        value={signupFormData.portfolioLink}
+        value={data.portfolioLink}
+        setData={setData}
       />
       <CustomInput
         label="Who are you sharing feedback to?"
         placeholder="Dairy"
         type="text"
         name="revieweeName"
-        value={signupFormData.revieweeName}
+        value={data.revieweeName}
+        setData={setData}
       />
       <CustomInput
         label="Email of the person you are giving feedback (optional)"
         placeholder="Dairy@sara.com"
         type="text"
         name="revieweeEmail"
-        value={signupFormData.revieweeEmail}
+        value={data.revieweeEmail}
+        setData={setData}
       />
       <Button
         className="bg-[#3a3cff] w-full h-[45px] rounded-4xl hover:bg-[#3a3cff]/95 mt-5 hover:cursor-pointer"

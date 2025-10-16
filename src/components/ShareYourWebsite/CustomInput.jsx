@@ -7,15 +7,13 @@ const CustomInput = ({
   placeholder,
   name,
   value,
+  setData,
   type = "text",
   required = true,
-  passwordMatch = true,
 }) => {
-  const dispatch = useDispatch();
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name !== "confirmPassword")
-      dispatch(SignUpFormData.setSignUpFormData({ [name]: value }));
+    setData((prev) => ({ ...prev, [name]: value }));
   };
   return (
     <div className="grid w-full items-center gap-2 relative">
@@ -31,9 +29,6 @@ const CustomInput = ({
         required={required}
         onChange={handleChange}
       />
-      {!passwordMatch && name == "confirmPassword" && (
-        <span className="text-xs text-red-500">Password doesn't match.</span>
-      )}
     </div>
   );
 };
