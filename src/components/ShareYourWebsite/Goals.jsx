@@ -68,7 +68,7 @@ const Goals = ({ data, setData }) => {
             type="button"
             onClick={handleAdd}
           >
-            <img src={Plus_Image} alt="Plus" className="w-max" />
+            <img src={Plus_Image} alt="Plus" className="w-[18px]" /> Add
           </Button>
         </div>
         <div className="flex flex-wrap gap-3">

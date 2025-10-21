@@ -16,11 +16,14 @@ const Given = ({ portfolio }) => {
     (item) => item.reviewerEmail === decryptUser.email
   );
 
-  const givenWithinAWeek = portfolio.filter(
-    (item) =>
-      item.reviewerEmail === decryptUser.email &&
-      new Date(item.createdAt) >= oneWeekAgo
-  );
+  const givenWithinAWeek = portfolio
+    .filter(
+      (item) =>
+        item.reviewerEmail === decryptUser.email &&
+        new Date(item.createdAt) >= oneWeekAgo
+    )
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .slice(0, 4);
 
   return (
     <div className="w-[calc(100%-380px)] h-full flex p-10 flex-col gap-5">
@@ -33,9 +36,9 @@ const Given = ({ portfolio }) => {
           Give feedback to others
         </Button>
       </div>
-      <div className="w-full h-max flex flex-col gap-2 overflow-auto py-2">
+      <div className="w-full h-max flex flex-col gap-2 py-2">
         <Label className="text-sm">Recently shared for review</Label>
-        <div className="w-full h-max flex gap-10">
+        <div className="w-full grid grid-cols-4 gap-10">
           {givenWithinAWeek.length != 0 ? (
             givenWithinAWeek.map((item, index) => (
               <motion.div
@@ -54,7 +57,7 @@ const Given = ({ portfolio }) => {
       </div>
       <div className="w-full h-max flex flex-col gap-2 overflow-auto py-2">
         <Label className="text-sm">All received feedbacks</Label>
-        <div className="w-full h-max flex gap-10">
+        <div className="w-full grid grid-cols-4 gap-10">
           {given.length != 0 ? (
             given.map((item, index) => (
               <motion.div
