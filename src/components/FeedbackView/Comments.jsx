@@ -1,24 +1,12 @@
-import {
-  Timeline,
-  TimelineBody,
-  TimelineContent,
-  TimelineItem,
-  TimelinePoint,
-  TimelineTime,
-} from "flowbite-react";
 import CircleCursor_Image from "../../assets/circleCursor.png";
 import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { decryptData } from "../../encryption";
 import axios from "axios";
 import { BASE_URL_SERVER } from "../../../config";
 import { useParams } from "react-router";
 
-const Comments = ({ page }) => {
+const Comments = () => {
   const { id } = useParams();
-  const loggedInUser = useSelector((state) => state.loggedInUser.data);
-  const decryptUser = decryptData(loggedInUser);
   const [feedbacks, setFeedbacks] = useState([]);
 
   useEffect(() => {

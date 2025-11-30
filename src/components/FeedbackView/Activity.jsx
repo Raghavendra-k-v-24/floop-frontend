@@ -9,16 +9,12 @@ import {
 import Bell_Image from "../../assets/bell.png";
 import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { decryptData } from "../../encryption";
 import axios from "axios";
 import { BASE_URL_SERVER } from "../../../config";
 import { useParams } from "react-router";
 
 const Activity = ({ page }) => {
   const { id } = useParams();
-  const loggedInUser = useSelector((state) => state.loggedInUser.data);
-  const decryptUser = decryptData(loggedInUser);
   const [activities, setActivities] = useState([]);
   useEffect(() => {
     const getActivity = async () => {

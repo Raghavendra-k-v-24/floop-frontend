@@ -1,4 +1,3 @@
-import { ArrowLeft } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,15 +9,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Copy_Image from "../../assets/copy_white.png";
-import { useDispatch, useSelector } from "react-redux";
-import { LoggedInUser, SignUpFormData } from "../../redux";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL_SERVER } from "../../../config";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
 import { decryptData, encryptData } from "../../encryption";
 import { BASE_URL_CLIENT } from "../../../config";
-import { useState } from "react";
 
 const ShareLink = ({ data, setData }) => {
   const navigate = useNavigate();

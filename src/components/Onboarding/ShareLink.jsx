@@ -1,4 +1,3 @@
-import { ArrowLeft } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,14 +10,12 @@ import {
 } from "@/components/ui/select";
 import Copy_Image from "../../assets/copy_white.png";
 import { useDispatch, useSelector } from "react-redux";
-import { LoggedInUser, SignUpFormData } from "../../redux";
+import { SignUpFormData } from "../../redux";
 import axios from "axios";
 import { BASE_URL_SERVER } from "../../../config";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
-import { encryptData } from "../../encryption";
 import { BASE_URL_CLIENT } from "../../../config";
-import { useState } from "react";
 
 const ShareLink = () => {
   const navigate = useNavigate();
@@ -57,25 +54,6 @@ const ShareLink = () => {
       className="w-full h-full flex flex-col gap-5"
       onSubmit={handleFormSubmit}
     >
-      {/* Back button */}
-      {/* <div
-        className="w-[120px] h-[40px] bg-[#F9FAFB] border-[2px] border-[#EBEFF4] rounded-3xl flex items-center justify-between px-4"
-        onClick={() => {
-          setStep(2);
-        }}
-      >
-        <div className="w-[20px] h-[20px] bg-neutral-400 rounded-full flex items-center justify-center">
-          <ArrowLeft size={15} strokeWidth={2} />
-        </div>
-        <Label className="">Go back</Label>
-      </div>
-      <div className="flex flex-col gap-2">
-        <Label className="text-lg font-bold">Sharing your portfolio</Label>
-        <Label className="text-sm text-neutral-400">
-          You can send this link to the person that will give you feedback on
-          your portfolio/website.
-        </Label>
-      </div> */}
       <div className="flex gap-2">
         <Input
           type="text"

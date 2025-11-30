@@ -2,6 +2,7 @@ import Sidebar from "./Sidebar";
 import { Separator } from "@/components/ui/separator";
 import Received from "./Received";
 import Given from "./Given";
+
 const Body = ({ page, portfolio }) => {
   return (
     <div className="w-full flex-1 flex px-5 py-2">

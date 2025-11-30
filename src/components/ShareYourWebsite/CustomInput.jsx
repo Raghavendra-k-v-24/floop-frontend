@@ -1,7 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useDispatch } from "react-redux";
-import { SignUpFormData } from "../../redux/index";
+
 const CustomInput = ({
   label,
   placeholder,
