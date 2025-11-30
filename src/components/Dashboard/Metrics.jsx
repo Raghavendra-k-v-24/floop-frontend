@@ -22,7 +22,7 @@ const Metrics = ({ page, portfolio }) => {
     if (page === "received") {
       const getFeedbackCount = async () => {
         const response = await axios.get(
-          `${BASE_URL_SERVER}/feedback-count?email=${decryptUser.email}`
+          `${BASE_URL_SERVER}/overall-feedback-count?email=${decryptUser.email}`
         );
         const data = response.data.data;
         setReceivedFeedbackCount(data.receivedFeedbackCount);

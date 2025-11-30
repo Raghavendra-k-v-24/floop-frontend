@@ -9,7 +9,7 @@ const Header = ({ portfolio, commentMode, toggleCommentMode }) => {
     <div className="w-full flex px-5 py-3 justify-between items-center">
       <div className="flex gap-5 h-[30px]">
         <img src={Floop_Image} alt="Floop Image" className="w-max" />
-        {portfolio.revieweeName && (
+        {portfolio?.revieweeName && (
           <Label className="text-xs">
             Giving feedback to
             <span className="text-[#3a3cff] -ml-1">
@@ -20,7 +20,9 @@ const Header = ({ portfolio, commentMode, toggleCommentMode }) => {
       </div>
       {portfolio?.portfolioLink && (
         <div className="w-[300px] py-2 bg-white text-center text-xs text-[#6D6D6D] rounded-full">
-          {portfolio.portfolioLink}
+          {portfolio?.portfolioLink.length > 30
+            ? portfolio?.portfolioLink.substring(0, 30) + "...."
+            : portfolio?.portfolioLink}
         </div>
       )}
 
@@ -33,14 +35,17 @@ const Header = ({ portfolio, commentMode, toggleCommentMode }) => {
           } text-[10px] hover:bg-white hover:cursor-pointer`}
           onClick={toggleCommentMode}
         >
-          Add Feedback
+          {commentMode ? "Exit Feedback" : "Add Feedback"}
           <img
             src={commentMode ? Mouse_Color_Image : Mouse_Image}
             alt="Mouse"
             className="w-[12px] -ml-1"
           />
         </Button>
-        <Button className="bg-white w-[150px] rounded-4xl text-black text-[10px] hover:bg-white hover:cursor-pointer">
+        <Button
+          className="bg-white w-[150px] rounded-4xl text-black text-[10px] hover:bg-white hover:cursor-pointer"
+          disabled
+        >
           Share feedback
           <img src={Plane_Image} alt="Plane" className="w-[13px] -ml-1" />
         </Button>

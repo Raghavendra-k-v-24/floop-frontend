@@ -2,7 +2,6 @@ import { useState } from "react";
 import UserDetails from "./UserDetails";
 import RoleSelector from "./RoleSelector";
 import FloopYourWebsite from "./FloopYourWebsite";
-import ShareLink from "./ShareLink";
 import FloopOtherWebsite from "./FloopOtherWebsite";
 
 const Form = () => {
@@ -17,7 +16,6 @@ const Form = () => {
       setInternalStep={setInternalStep}
     />,
     <FloopOtherWebsite setStep={setStep} />,
-    // <ShareLink setStep={setStep} />,
   ];
   return (
     <div className="w-[400px] h-max bg-white rounded-2xl shadow-xl flex flex-col px-5 py-10">

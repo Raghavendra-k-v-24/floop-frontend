@@ -29,15 +29,27 @@ const RoleSelector = ({ setStep }) => {
   const handleSkip = async () => {
     try {
       const data = { ...signupFormData, skip: true };
-      await axios.post(`${BASE_URL_SERVER}/signup`, data);
-      const userData = {
-        name: signupFormData.name,
-        email: signupFormData.email,
-        role: signupFormData.role,
-      };
-      const encryptedUserData = encryptData(userData);
-      dispatch(LoggedInUser.setLoggedInUser(encryptedUserData));
-      navigate(`/dashboard`);
+      const response = await axios.post(`${BASE_URL_SERVER}/signup`, data);
+      if (response.status == 200) {
+        const userId = response.data.data.userId;
+        await axios.post(`${BASE_URL_SERVER}/history`, {
+          associatedToUser: userId,
+          associatedToPortfolio: null,
+          message: "You created an account",
+          type: null,
+          eventType: "CREATED",
+          activityDate: new Date().toISOString().split("T")[0],
+        });
+        const loggedInUserData = {
+          name: signupFormData.name,
+          email: signupFormData.email,
+          role: signupFormData.role,
+          id: userId,
+        };
+        const encryptedUserData = encryptData(loggedInUserData);
+        dispatch(LoggedInUser.setLoggedInUser(encryptedUserData));
+        navigate(`/dashboard`);
+      }
     } catch (err) {
       toast.error(err.response.data.data);
     }

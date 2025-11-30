@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router";
 import { encryptData } from "../../encryption";
 import { BASE_URL_CLIENT } from "../../../config";
+
 const FloopOtherWebsite = ({ setStep }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -22,15 +23,37 @@ const FloopOtherWebsite = ({ setStep }) => {
         signupFormData
       );
       if (response.status == 200) {
-        const portfolioId = response.data.data;
+        const userId = response.data.data.userId;
+        const portfolioId = response.data.data.portfolioId;
         const reviewLink = `${BASE_URL_CLIENT}/${portfolioId}`;
         dispatch(SignUpFormData.setSignUpFormData({ reviewLink: reviewLink }));
-        const userData = {
+        await axios.post(`${BASE_URL_SERVER}/history`, {
+          associatedToUser: userId,
+          associatedToPortfolio: null,
+          message: "You created an account",
+          type: null,
+          eventType: "CREATED",
+          activityDate: new Date().toISOString().split("T")[0],
+        });
+        await axios.post(`${BASE_URL_SERVER}/history`, {
+          associatedToUser: userId,
+          associatedToPortfolio: portfolioId,
+          message: `You created ${
+            signupFormData.portfolioLink.length > 30
+              ? signupFormData.portfolioLink.substring(0, 30) + "...."
+              : signupFormData.portfolioLink
+          } for ${signupFormData.revieweeName} to review`,
+          type: "Given",
+          eventType: "CREATED",
+          activityDate: new Date().toISOString().split("T")[0],
+        });
+        const loggedInUserData = {
           name: signupFormData.name,
           email: signupFormData.email,
           role: signupFormData.role,
+          id: userId,
         };
-        const encryptedUserData = encryptData(userData);
+        const encryptedUserData = encryptData(loggedInUserData);
         dispatch(LoggedInUser.setLoggedInUser(encryptedUserData));
         navigate(`/${portfolioId}`);
       }

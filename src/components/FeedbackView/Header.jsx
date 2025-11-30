@@ -5,7 +5,9 @@ import Floop_Image from "../../assets/floop.png";
 import Mouse_Image from "../../assets/mouse.png";
 import Plane_Image from "../../assets/plane.png";
 import { Button } from "@/components/ui/button";
-const Header = ({ portfolio, panel }) => {
+import Mouse_Color_Image from "../../assets/mouse_color.png";
+
+const Header = ({ portfolio, panel, commentMode, toggleCommentMode }) => {
   const navigate = useNavigate();
   return (
     <div className="w-full flex px-5 py-3 justify-between items-center">
@@ -29,23 +31,37 @@ const Header = ({ portfolio, panel }) => {
         </div>
       </div>
       <div className="w-[300px] py-2 bg-white text-center text-xs text-[#6D6D6D] rounded-full">
-        {portfolio.portfolioLink}
+        {/* {portfolio.portfolioLink} */}
+        {portfolio?.portfolioLink?.length > 30
+          ? portfolio?.portfolioLink.substring(0, 30) + "...."
+          : portfolio?.portfolioLink}
       </div>
 
       {panel === "received" ? (
         <div className="w-[200px] h-max border-[1px] rounded-full flex items-center justify-center py-2 text-xs bg-white border-[#EBEFF4]">
-          Feedback from: {portfolio.reviewerName}
+          Feedback from: {portfolio?.reviewerName?.split(" ")[0]}
         </div>
       ) : (
         <div className="flex gap-2">
           <Button
-            className="bg-white w-[150px] rounded-4xl text-black text-[10px] hover:bg-white hover:cursor-pointer"
-            onClick={() => window.open(`/${portfolio._id}`, "_blank")}
+            className={`bg-white w-[150px] rounded-4xl ${
+              commentMode
+                ? "text-[#3C3FFE] border-[1px] border-[#3C3FFE]"
+                : "text-black"
+            } text-[10px] hover:bg-white hover:cursor-pointer`}
+            onClick={toggleCommentMode}
           >
-            Add Feedback
-            <img src={Mouse_Image} alt="Mouse" className="w-[12px] -ml-1" />
+            {commentMode ? "Exit Feedback" : "Add Feedback"}
+            <img
+              src={commentMode ? Mouse_Color_Image : Mouse_Image}
+              alt="Mouse"
+              className="w-[12px] -ml-1"
+            />
           </Button>
-          <Button className="bg-white w-[150px] rounded-4xl text-black text-[10px] hover:bg-white hover:cursor-pointer">
+          <Button
+            disabled
+            className="bg-white w-[150px] rounded-4xl text-black text-[10px] hover:bg-white hover:cursor-pointer"
+          >
             Share feedback
             <img src={Plane_Image} alt="Plane" className="w-[13px] -ml-1" />
           </Button>

@@ -5,11 +5,11 @@ const Iframe = ({ id, portfolio }) => {
   const reviewerEmail = portfolio?.reviewerEmail;
   return (
     <div className="w-full h-full flex items-center justify-center overflow-hidden">
-      {portfolio.portfolioLink ? (
+      {portfolio?.portfolioLink ? (
         <iframe
           id="review-iframe"
           src={`${BASE_URL_SERVER}/proxy?url=${encodeURIComponent(
-            portfolio.portfolioLink
+            portfolio?.portfolioLink
           )}&portfolioId=${encodeURIComponent(
             id
           )}&reviewerName=${encodeURIComponent(

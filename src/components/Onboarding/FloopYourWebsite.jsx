@@ -24,7 +24,9 @@ const FloopYourWebsite = ({ setStep, internalStep, setInternalStep }) => {
         <Label className="">Go back</Label>
       </div>
       <div className="flex flex-col gap-2">
-        <Label className="text-lg font-bold">flooping your portfolio</Label>
+        <Label className="text-lg font-bold">
+          flooping <span className="text-[#3A3CFF]">your portfolio</span>
+        </Label>
         <Label className="text-sm text-neutral-400">
           Get feedback on your live website from your peers/mentors/reviewers
         </Label>

@@ -39,7 +39,6 @@ const ShareLink = ({ data, setData }) => {
     try {
       const parts = data.reviewLink.split("/");
       const portfolioId = parts[parts.length - 1];
-      console.log(portfolioId);
       await axios.put(`${BASE_URL_SERVER}/portfolio`, {
         portfolioId: portfolioId,
         emailInvites: data.emailInvites,

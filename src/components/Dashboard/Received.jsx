@@ -12,9 +12,9 @@ const Received = ({ portfolio }) => {
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
   const loggedInUser = useSelector((state) => state.loggedInUser.data);
   const decryptUser = decryptData(loggedInUser);
-  const received = portfolio.filter(
-    (item) => item.revieweeEmail === decryptUser.email
-  );
+  const received = portfolio
+    .filter((item) => item.revieweeEmail === decryptUser.email)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   const receivedWithinAWeek = portfolio
     .filter(
@@ -38,9 +38,10 @@ const Received = ({ portfolio }) => {
       </div>
       <div className="w-full h-max flex flex-col gap-2 py-2">
         <Label className="text-sm">Recently shared for review</Label>
-        <div className="w-full grid grid-cols-4 gap-10">
-          {receivedWithinAWeek.length != 0 ? (
-            receivedWithinAWeek.map((item, index) => (
+
+        {receivedWithinAWeek.length !== 0 ? (
+          <div className="w-full grid grid-cols-4 gap-10">
+            {receivedWithinAWeek.map((item, index) => (
               <motion.div
                 key={index}
                 whileHover={{ y: -6 }}
@@ -49,17 +50,17 @@ const Received = ({ portfolio }) => {
               >
                 <DashboardCard item={item} panel="received" />
               </motion.div>
-            ))
-          ) : (
-            <EmptyPlaceholder message="Your recent website/portfolio links that you share with others will be shown here" />
-          )}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <EmptyPlaceholder message="Your recent website/portfolio links that you share with others will be shown here" />
+        )}
       </div>
       <div className="w-full h-max flex flex-col gap-2 py-2">
         <Label className="text-sm">All received feedbacks</Label>
-        <div className="w-full grid grid-cols-4 gap-10">
-          {received.length != 0 ? (
-            received.map((item, index) => (
+        {received.length != 0 ? (
+          <div className="w-full grid grid-cols-4 gap-10">
+            {received.map((item, index) => (
               <motion.div
                 key={index}
                 whileHover={{ y: -6 }}
@@ -68,11 +69,11 @@ const Received = ({ portfolio }) => {
               >
                 <DashboardCard item={item} panel="received" />
               </motion.div>
-            ))
-          ) : (
-            <EmptyPlaceholder message="List of all the feedbacks you have received will be showed here" />
-          )}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <EmptyPlaceholder message="List of all the feedbacks you have received will be showed here" />
+        )}
       </div>
     </div>
   );

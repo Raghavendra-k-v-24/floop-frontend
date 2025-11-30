@@ -1,56 +1,34 @@
 import { Label } from "@/components/ui/label";
 import Plus_Image from "../../assets/plus.png";
-import Tick_Image from "../../assets/tick.png";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { useDispatch, useSelector } from "react-redux";
-import { SignUpFormData } from "../../redux";
+import { LoggedInUser, SignUpFormData } from "../../redux";
 import axios from "axios";
 import { BASE_URL_SERVER } from "../../../config";
 import { toast } from "sonner";
 import { BASE_URL_CLIENT } from "../../../config";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import ShareLink from "./ShareLink";
+import { encryptData } from "../../encryption";
+
 const Goals = ({ setStep }) => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const signupFormData = useSelector((state) => state.signupFormData);
-  // const [selected, setSelected] = useState(
-  //   signupFormData.goals
-  //     ? signupFormData.goals
-  //         .split(",")
-  //         .map((g) => g.trim())
-  //         .filter(Boolean)
-  //     : []
-  // );
   const goalsList = signupFormData.goals.split(",").filter(Boolean);
-  // const tags = [
-  //   "I want to get feedback on a particular case study",
-  //   "Improve story telling",
-  //   "I want a perspective of a hiring manager",
-  // ];
-  // const toggleTag = (tag) => {
-  //   setSelected((prev) =>
-  //     prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
-  //   );
-  // };
 
   const [goals, setGoals] = useState(signupFormData.goals);
 
   const handleChange = (e) => {
     const { value } = e.target;
-    // dispatch(SignUpFormData.setSignUpFormData({ [name]: value }));
     setGoals(value);
   };
 
@@ -66,11 +44,39 @@ const Goals = ({ setStep }) => {
         signupFormData
       );
       if (response.status == 200) {
-        const portfolioId = response.data.data;
+        const userId = response.data.data.userId;
+        const portfolioId = response.data.data.portfolioId;
         const reviewLink = `${BASE_URL_CLIENT}/${portfolioId}`;
         dispatch(SignUpFormData.setSignUpFormData({ reviewLink: reviewLink }));
-        // setStep(4);
+        const loggedInUserData = {
+          name: signupFormData.name,
+          email: signupFormData.email,
+          role: signupFormData.role,
+          id: userId,
+        };
+        const encryptedUserData = encryptData(loggedInUserData);
+        dispatch(LoggedInUser.setLoggedInUser(encryptedUserData));
         setOpen(true);
+        await axios.post(`${BASE_URL_SERVER}/history`, {
+          associatedToUser: userId,
+          associatedToPortfolio: null,
+          message: "You created an account",
+          type: null,
+          eventType: "CREATED",
+          activityDate: new Date().toISOString().split("T")[0],
+        });
+        await axios.post(`${BASE_URL_SERVER}/history`, {
+          associatedToUser: userId,
+          associatedToPortfolio: portfolioId,
+          message: `You shared ${
+            signupFormData.portfolioLink.length > 30
+              ? signupFormData.portfolioLink.substring(0, 30) + "...."
+              : signupFormData.portfolioLink
+          } with ${signupFormData.reviewerName} for review`,
+          type: "Received",
+          eventType: "CREATED",
+          activityDate: new Date().toISOString().split("T")[0],
+        });
       }
     } catch (err) {
       toast.error(err.response.data.data);

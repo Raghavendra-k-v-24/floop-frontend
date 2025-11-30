@@ -15,9 +15,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import ShareLink from "./ShareLink";
+import { useSelector } from "react-redux";
+import { decryptData } from "../../encryption";
 const Goals = ({ data, setData }) => {
   const [open, setOpen] = useState(false);
   const goalsList = data.goals.split(",").filter(Boolean);
+  const loggedInUser = useSelector((state) => state.loggedInUser.data);
+  const decryptUserData = decryptData(loggedInUser);
 
   const [goals, setGoals] = useState(data.goals);
 
@@ -39,6 +43,18 @@ const Goals = ({ data, setData }) => {
         const reviewLink = `${BASE_URL_CLIENT}/${portfolioId}`;
         setData((prev) => ({ ...prev, "reviewLink": reviewLink }));
         setOpen(true);
+        await axios.post(`${BASE_URL_SERVER}/history`, {
+          associatedToUser: decryptUserData.id,
+          associatedToPortfolio: portfolioId,
+          message: `You shared ${
+            data.portfolioLink.length > 30
+              ? data.portfolioLink.substring(0, 30) + "...."
+              : data.portfolioLink
+          } with ${data.reviewerName} for review`,
+          type: "Received",
+          eventType: "CREATED",
+          activityDate: new Date().toISOString().split("T")[0],
+        });
       }
     } catch (err) {
       toast.error(err.response.data.data);

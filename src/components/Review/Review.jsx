@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import axios from "axios";
 import { BASE_URL_SERVER } from "../../../config";
+import { useSelector } from "react-redux";
+import { decryptData } from "../../encryption";
 const Review = () => {
   const [portfolio, setPortfolio] = useState({});
   const [commentMode, setCommentMode] = useState(false);
@@ -15,6 +17,20 @@ const Review = () => {
       setPortfolio(data);
     };
     getApplication();
+  }, [id]);
+
+  useEffect(() => {
+    const markOpened = async () => {
+      try {
+        await axios.put(`${BASE_URL_SERVER}/portfolio/opened`, {
+          portfolioId: id,
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    if (id) markOpened();
   }, [id]);
 
   const toggleCommentMode = () => {

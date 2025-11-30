@@ -8,6 +8,7 @@ import { useParams } from "react-router";
 const FeedbackView = () => {
   const { id, panel } = useParams();
   const [portfolio, setPortfolio] = useState([]);
+  const [commentMode, setCommentMode] = useState(false);
   useEffect(() => {
     const getPortfolio = async () => {
       const response = await axios.get(`${BASE_URL_SERVER}/portfolio?id=${id}`);
@@ -15,10 +16,24 @@ const FeedbackView = () => {
     };
     getPortfolio();
   }, []);
+
+  const toggleCommentMode = () => {
+    setCommentMode((prev) => !prev);
+    const iframe = document.getElementById("review-iframe");
+    iframe?.contentWindow?.postMessage(
+      { type: "toggleCommentMode", mode: !commentMode },
+      "*"
+    );
+  };
   return (
     <div className="w-full min-h-screen flex flex-col bg-[#EBEFF4]">
-      <Header portfolio={portfolio} panel={panel} />
-      <Body id={id} portfolio={portfolio} />
+      <Header
+        portfolio={portfolio}
+        panel={panel}
+        commentMode={commentMode}
+        toggleCommentMode={toggleCommentMode}
+      />
+      <Body id={id} portfolio={portfolio} commentMode={commentMode} />
     </div>
   );
 };

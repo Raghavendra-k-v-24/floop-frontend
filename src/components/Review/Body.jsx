@@ -11,7 +11,6 @@ const Body = ({ id, portfolio, commentMode }) => {
             </Label>
           </div>
         )}
-
         <Iframe id={id} portfolio={portfolio} />
       </div>
     </div>

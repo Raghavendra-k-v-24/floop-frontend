@@ -46,13 +46,6 @@ const ShareLink = () => {
       });
       await navigator.clipboard.writeText(`${BASE_URL_CLIENT}/${portfolioId}`);
       toast.success("Copied to clipboard");
-      const userData = {
-        name: signupFormData.name,
-        email: signupFormData.email,
-        role: signupFormData.role,
-      };
-      const encryptedUserData = encryptData(userData);
-      dispatch(LoggedInUser.setLoggedInUser(encryptedUserData));
       navigate("/dashboard");
     } catch (err) {
       toast.error(err.response.data.data);

@@ -12,9 +12,9 @@ const Given = ({ portfolio }) => {
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
   const loggedInUser = useSelector((state) => state.loggedInUser.data);
   const decryptUser = decryptData(loggedInUser);
-  const given = portfolio.filter(
-    (item) => item.reviewerEmail === decryptUser.email
-  );
+  const given = portfolio
+    .filter((item) => item.reviewerEmail === decryptUser.email)
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   const givenWithinAWeek = portfolio
     .filter(
@@ -38,9 +38,10 @@ const Given = ({ portfolio }) => {
       </div>
       <div className="w-full h-max flex flex-col gap-2 py-2">
         <Label className="text-sm">Recently shared for review</Label>
-        <div className="w-full grid grid-cols-4 gap-10">
-          {givenWithinAWeek.length != 0 ? (
-            givenWithinAWeek.map((item, index) => (
+
+        {givenWithinAWeek.length != 0 ? (
+          <div className="w-full grid grid-cols-4 gap-10">
+            {givenWithinAWeek.map((item, index) => (
               <motion.div
                 key={index}
                 whileHover={{ y: -6 }}
@@ -49,17 +50,18 @@ const Given = ({ portfolio }) => {
               >
                 <DashboardCard item={item} panel="given" />
               </motion.div>
-            ))
-          ) : (
-            <EmptyPlaceholder message="Your recent website/portfolio links that you share with others will be shown here" />
-          )}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <EmptyPlaceholder message="Your recent website/portfolio links that you share with others will be shown here" />
+        )}
       </div>
       <div className="w-full h-max flex flex-col gap-2 overflow-auto py-2">
         <Label className="text-sm">All received feedbacks</Label>
-        <div className="w-full grid grid-cols-4 gap-10">
-          {given.length != 0 ? (
-            given.map((item, index) => (
+
+        {given.length != 0 ? (
+          <div className="w-full grid grid-cols-4 gap-10">
+            {given.map((item, index) => (
               <motion.div
                 key={index}
                 whileHover={{ y: -6 }}
@@ -68,11 +70,11 @@ const Given = ({ portfolio }) => {
               >
                 <DashboardCard item={item} panel="given" />
               </motion.div>
-            ))
-          ) : (
-            <EmptyPlaceholder message="List of all the feedbacks you have given will be showed here" />
-          )}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <EmptyPlaceholder message="List of all the feedbacks you have given will be showed here" />
+        )}
       </div>
     </div>
   );
