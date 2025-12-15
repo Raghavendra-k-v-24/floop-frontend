@@ -42,13 +42,13 @@ const Header = ({ portfolio, commentMode, toggleCommentMode }) => {
             className="w-[12px] -ml-1"
           />
         </Button>
-        <Button
+        {/* <Button
           className="bg-white w-[150px] rounded-4xl text-black text-[10px] hover:bg-white hover:cursor-pointer"
           disabled
         >
           Share feedback
           <img src={Plane_Image} alt="Plane" className="w-[13px] -ml-1" />
-        </Button>
+        </Button> */}
       </div>
     </div>
   );
