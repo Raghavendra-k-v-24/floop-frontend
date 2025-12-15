@@ -9,14 +9,22 @@ import { decryptData } from "../../encryption";
 const Dashboard = () => {
   const [page, setPage] = useState("received");
   const [portfolio, setPortfolio] = useState([]);
+  const [loading, setLoading] = useState(false);
   const loggedInUser = useSelector((state) => state.loggedInUser.data);
   const decryptUser = decryptData(loggedInUser);
   useEffect(() => {
     const getPortfolio = async () => {
-      const response = await axios.get(
-        `${BASE_URL_SERVER}/portfolio?email=${decryptUser.email}`
-      );
-      setPortfolio(response.data.data);
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `${BASE_URL_SERVER}/portfolio?email=${decryptUser.email}`
+        );
+        setPortfolio(response.data.data);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
     };
     getPortfolio();
   }, []);
@@ -24,7 +32,7 @@ const Dashboard = () => {
   return (
     <div className="w-full min-h-screen flex flex-col bg-[#EBEFF4]">
       <Header setPage={setPage} />
-      <Body page={page} portfolio={portfolio} />
+      <Body loading={loading} page={page} portfolio={portfolio} />
     </div>
   );
 };

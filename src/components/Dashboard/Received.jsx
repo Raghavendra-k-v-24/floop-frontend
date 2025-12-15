@@ -6,7 +6,8 @@ import { decryptData } from "../../encryption";
 import DashboardCard from "./DashboardCard";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
-const Received = ({ portfolio }) => {
+import { Spinner } from "@/components/ui/spinner";
+const Received = ({ loading, portfolio }) => {
   const navigate = useNavigate();
   const oneWeekAgo = new Date();
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
@@ -38,8 +39,11 @@ const Received = ({ portfolio }) => {
       </div>
       <div className="w-full h-max flex flex-col gap-2 py-2">
         <Label className="text-sm">Recently shared for review</Label>
-
-        {receivedWithinAWeek.length !== 0 ? (
+        {loading ? (
+          <div className="w-full h-[350px] flex items-center justify-center">
+            <Spinner className="h-[30px] w-[30px] text-[#3A3CFF]" />
+          </div>
+        ) : receivedWithinAWeek.length !== 0 ? (
           <div className="w-full grid grid-cols-4 gap-10">
             {receivedWithinAWeek.map((item, index) => (
               <motion.div
@@ -58,7 +62,11 @@ const Received = ({ portfolio }) => {
       </div>
       <div className="w-full h-max flex flex-col gap-2 py-2">
         <Label className="text-sm">All received feedbacks</Label>
-        {received.length != 0 ? (
+        {loading ? (
+          <div className="w-full h-[350px] flex items-center justify-center">
+            <Spinner className="h-[30px] w-[30px] text-[#3A3CFF]" />
+          </div>
+        ) : received.length != 0 ? (
           <div className="w-full grid grid-cols-4 gap-10">
             {received.map((item, index) => (
               <motion.div

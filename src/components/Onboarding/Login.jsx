@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router";
 import { encryptData } from "../../encryption";
 import { useDispatch } from "react-redux";
+import { Spinner } from "@/components/ui/spinner";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -16,8 +17,10 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post(
         `${BASE_URL_SERVER}/login`,
@@ -31,6 +34,8 @@ const Login = () => {
       }
     } catch (err) {
       toast.error(err.response.data.data);
+    } finally {
+      setLoading(false);
     }
   };
   const handleChange = (e) => {
@@ -77,7 +82,7 @@ const Login = () => {
           className="bg-[#3a3cff] w-full h-[45px] rounded-4xl hover:bg-[#3a3cff]/95 hover:cursor-pointer"
           type="submit"
         >
-          Login
+          {loading ? <Spinner className="w-[20px] h-[20px]" /> : "Login"}
         </Button>
       </div>
     </form>
